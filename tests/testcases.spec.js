@@ -51,4 +51,28 @@ test("User Sign Up", async ({ page }) => {
   await expect(accountCreatedMessage).toHaveText("Account Created!");
 });
 
+test("User Login with correct email and password", async ({ page }) => {
+    console.log("Navigating to website...");
+    await page.goto("https://www.automationexercise.com/");
+  
+    console.log("Clicking Signup/Login button...");
+    await page.click("text=Signup / Login");
+  
+    console.log("Filling email and password for login");
+  
+    await page.fill('[data-qa="login-email"]', "testNUser@example.com");
+    await page.fill('[data-qa="login-password"]', "Test@1234");
+    await page.click('[data-qa="login-button"]');
+  
+    console.log("Navigating to home page with user account logged in");
+    //   await page.screenshot({ path: "debug.png" });
+    await page.waitForSelector("li a:has(i.fa-user)");
+  
+    // Get the text of the logged-in user element
+    const loggedInText = await page.textContent("li a:has(i.fa-user)");
+  
+    // Use the `expect` assertion to check if the logged-in text contains "Logged in as Test User"
+    expect(loggedInText).toContain("Logged in as Test User");
+  });
+
 
